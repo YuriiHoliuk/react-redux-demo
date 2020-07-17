@@ -3,19 +3,14 @@ import './App.css';
 import { GoodsList } from './components/GoodsList/GoodsList';
 import { fetchGoods } from './api/api';
 
-interface State {
-  goods: Good[];
-  error: boolean;
-}
-
 class App extends React.Component {
-  state: State = {
+  state = {
     goods: [],
     error: false,
   };
 
   getAllGoods = () => {
-    fetchGoods<Good>()
+    fetchGoods()
       .then(response => {
         this.setState({
           goods: response.data,
@@ -29,7 +24,7 @@ class App extends React.Component {
   };
 
   getFiveGoods = () => {
-    fetchGoods<Good>()
+    fetchGoods()
       .then(response => {
         this.setState({
           goods: [...response.data].sort((a, b) => (
@@ -44,7 +39,7 @@ class App extends React.Component {
   };
 
   getRedGoods = () => {
-    fetchGoods<Good>()
+    fetchGoods()
       .then(response => {
         this.setState({
           goods: response.data.filter(item => item.color === 'red'),
