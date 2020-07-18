@@ -1,25 +1,18 @@
 import React from 'react';
 import './App.css';
+import { connect } from 'react-redux';
 import { GoodsList } from './components/GoodsList/GoodsList';
 import { fetchGoods } from './api/api';
+import { setGoods, setError } from './store';
 
 class App extends React.Component {
-  state = {
-    goods: [],
-    error: false,
-  };
-
   getAllGoods = () => {
     fetchGoods()
-      .then(response => {
-        this.setState({
-          goods: response.data,
-        });
+      .then(({ data }) => {
+        this.props.setGoods(data);
       })
       .catch(error => {
-        this.setState({
-          error,
-        });
+        this.props.setError(error.message);
       });
   };
 
@@ -53,7 +46,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { goods, error } = this.state;
+    const { error } = this.props;
 
     return (
       <div className="container">
@@ -85,10 +78,25 @@ class App extends React.Component {
               Ooops! Something went wrong, maybe try later
             </div>
           )
-          : <GoodsList goods={goods} />}
+          : <GoodsList />}
       </div>
     );
   }
 }
 
-export default App;
+const mapState2Props = (globalState) => {
+  const { error, goods } = globalState;
+
+  return {
+    error,
+    goods,
+  };
+};
+
+// NOTE: may be a function
+const mapDispatchToProps = {
+  setGoods,
+  setError,
+};
+
+export default connect(mapState2Props, mapDispatchToProps)(App);

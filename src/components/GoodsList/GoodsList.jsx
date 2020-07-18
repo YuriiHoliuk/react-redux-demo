@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-export const GoodsList = (props) => {
-  const { goods } = props;
+const goodsSelector = (globalState) => globalState.goods;
+
+export const GoodsList = () => {
+  const goods = useSelector(goodsSelector);
 
   return (
     <ul className="list-group">
